@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Mousetrap from 'mousetrap'
 import Dropzone from './components/Dropzone'
 import Layout from './components/Layout'
 import Player from './components/Player'
@@ -11,6 +12,31 @@ function App () {
   const [isPlaying, setIsPlaying] = useState(true)
   const [duration, setDuration] = useState('0:00')
   const [currentTime, setCurrentTime] = useState('0:00')
+
+  useEffect(() => {
+    Mousetrap.bind('left', backTime)
+    Mousetrap.bind('right', nextTime)
+    Mousetrap.bind('up', play)
+    Mousetrap.bind('down', pause)
+  }, [audio])
+
+  const backTime = () => {
+    audio.currentTime = audio.currentTime - 5
+  }
+
+  const nextTime = () => {
+    audio.currentTime = audio.currentTime + 5
+  }
+
+  const play = () => {
+    audio.play()
+    setIsPlaying(true)
+  }
+
+  const pause = () => {
+    audio.pause()
+    setIsPlaying(false)
+  }
 
   const handleClickButton = () => {
     if (isPlaying) {
