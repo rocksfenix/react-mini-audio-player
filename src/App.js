@@ -8,6 +8,7 @@ import { calculateCurrentValue, calculateTotalValue } from './util'
 function App () {
   const [hasAudio, setHasAudio] = useState(false)
   const [audio, setAudio] = useState()
+  const [title, setTitle] = useState('')
   const [progress, setProgress] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [duration, setDuration] = useState('0:00')
@@ -50,6 +51,7 @@ function App () {
 
   const onSelectAudioFile = (file) => {
     try {
+      setTitle(file.name)
       const tempUrl = window.URL.createObjectURL(file)
       const audioElement = new window.Audio(tempUrl)
       setAudio(audioElement)
@@ -75,11 +77,12 @@ function App () {
       {hasAudio
         ? (
           <Player
+            title={title}
             progress={progress}
-            onClickButton={handleClickButton}
-            isPlaying={isPlaying}
             duration={duration}
+            isPlaying={isPlaying}
             currentTime={currentTime}
+            onClickButton={handleClickButton}
           />
         )
         : <Dropzone onSelectedAudio={onSelectAudioFile} />}

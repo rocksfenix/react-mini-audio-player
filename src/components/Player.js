@@ -4,13 +4,14 @@ import Progressbar from './Progressbar'
 import Button from './Button'
 import Icon from './Icon'
 import Timer from './Timer'
+import Title from './Title'
 import pauseIcon from '../images/pause.svg'
 import playIcon from '../images/play.svg'
 
 const Container = styled.section`
   width: 50%;
   max-width: 1000px;
-  height: 35vh;
+  min-height: 35vh;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -21,6 +22,7 @@ const Container = styled.section`
 const Player = (props) => {
   return (
     <Container>
+      <Title>{props.title}</Title>
       <Button onClick={props.onClickButton}>
         <Icon src={props.isPlaying ? pauseIcon : playIcon} />
       </Button>
