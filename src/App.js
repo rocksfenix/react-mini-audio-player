@@ -39,6 +39,10 @@ function App () {
     setIsPlaying(false)
   }
 
+  const handleSeek = (percent) => {
+    audio.currentTime = percent * audio.duration / 100
+  }
+
   const handleClickButton = () => {
     if (isPlaying) {
       setIsPlaying(false)
@@ -83,6 +87,7 @@ function App () {
             isPlaying={isPlaying}
             currentTime={currentTime}
             onClickButton={handleClickButton}
+            onSeek={handleSeek}
           />
         )
         : <Dropzone onSelectedAudio={onSelectAudioFile} />}

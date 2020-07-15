@@ -27,7 +27,10 @@ const Player = (props) => {
         <Icon src={props.isPlaying ? pauseIcon : playIcon} />
       </Button>
       <Timer>{props.currentTime} / {props.duration}</Timer>
-      <Progressbar progress={props.progress} />
+      <Progressbar
+        progress={props.progress}
+        onSeek={props.onSeek}
+      />
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 const Progress = styled.section`
@@ -18,12 +18,24 @@ const Container = styled.section`
 `
 
 const Progressbar = (props) => {
+  const barRef = useRef()
   const progressStyles = {
     width: `${props.progress}%`
   }
 
+  const handleClick = (e) => {
+    e.stopPropagation()
+    var rect = barRef.current.getBoundingClientRect()
+    var x = e.clientX - rect.left
+    const percent = x * 100 / barRef.current.clientWidth
+    props.onSeek(percent)
+  }
+
   return (
-    <Container>
+    <Container
+      onClick={handleClick}
+      ref={barRef}
+    >
       <Progress style={progressStyles} />
     </Container>
   )
