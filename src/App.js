@@ -19,6 +19,7 @@ function App () {
     Mousetrap.bind('right', nextTime)
     Mousetrap.bind('up', play)
     Mousetrap.bind('down', pause)
+    Mousetrap.bind('del', reset)
   }, [audio])
 
   const backTime = () => {
@@ -37,6 +38,15 @@ function App () {
   const pause = () => {
     audio.pause()
     setIsPlaying(false)
+  }
+
+  const reset = () => {
+    audio.pause()
+    setHasAudio(false)
+    setIsPlaying(false)
+    setProgress(0)
+    setDuration('0:00')
+    setAudio(null)
   }
 
   const handleSeek = (percent) => {
