@@ -13,6 +13,7 @@ function App () {
   const [isPlaying, setIsPlaying] = useState(true)
   const [duration, setDuration] = useState('0:00')
   const [currentTime, setCurrentTime] = useState('0:00')
+  const [marks, setMarks] = useState([])
 
   useEffect(() => {
     Mousetrap.bind('left', backTime)
@@ -63,6 +64,24 @@ function App () {
     }
   }
 
+  const handleAddMarker = (percent) => {
+    setMarks([
+      ...marks,
+      {
+        percent: `${percent}%`,
+        id: Math.random().toString(16)
+      }
+    ])
+  }
+
+  const handleMoveMark = (markUpdated) => {
+    setMarks(marks.map(mark => (
+      mark.id === markUpdated.id
+        ? markUpdated
+        : mark
+    )))
+  }
+
   const onSelectAudioFile = (file) => {
     try {
       setTitle(file.name)
@@ -98,6 +117,9 @@ function App () {
             currentTime={currentTime}
             onClickButton={handleClickButton}
             onSeek={handleSeek}
+            onAddMarker={handleAddMarker}
+            marks={marks}
+            onMoveMark={handleMoveMark}
           />
         )
         : <Dropzone onSelectedAudio={onSelectAudioFile} />}
