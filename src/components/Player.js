@@ -30,6 +30,9 @@ const Player = (props) => {
       <Progressbar
         progress={props.progress}
         onSeek={props.onSeek}
+        onAddMarker={props.onAddMarker}
+        marks={props.marks}
+        onMoveMark={props.onMoveMark}
       />
     </Container>
   )

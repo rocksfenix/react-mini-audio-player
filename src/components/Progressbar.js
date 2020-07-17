@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
+import Mark from './Mark'
 
 const Progress = styled.section`
   height: 100%;
@@ -24,18 +25,40 @@ const Progressbar = (props) => {
   }
 
   const handleClick = (e) => {
-    e.stopPropagation()
+    // Only fire on left click
+    if (e.buttons === 1) {
+      props.onSeek(getPercent(e))
+    }
+  }
+
+  const getPercent = (e) => {
     var rect = barRef.current.getBoundingClientRect()
     var x = e.clientX - rect.left
     const percent = x * 100 / barRef.current.clientWidth
-    props.onSeek(percent)
+    return percent
+  }
+
+  const handleRightClick = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    props.onAddMarker(getPercent(e))
   }
 
   return (
     <Container
-      onClick={handleClick}
+      onMouseDown={handleClick}
+      onContextMenu={handleRightClick}
       ref={barRef}
     >
+      {props.marks.map(mark => (
+        <Mark
+          key={mark.id}
+          style={{ left: mark.percent }}
+          mark={mark}
+          barRef={barRef}
+          onMove={props.onMoveMark}
+        />
+      ))}
       <Progress style={progressStyles} />
     </Container>
   )
