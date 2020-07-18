@@ -24,7 +24,7 @@ const Mark = (props) => {
     e.stopPropagation()
     const rect = props.barRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
-    const percent = x * 100 / props.barRef.current.clientWidth
+    const percent = (x - 8) * 100 / props.barRef.current.clientWidth
     props.onMove({
       ...props.mark,
       percent: `${percent}%`
