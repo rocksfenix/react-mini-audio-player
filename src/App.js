@@ -5,6 +5,31 @@ import Layout from './components/Layout'
 import Player from './components/Player'
 import { calculateCurrentValue, calculateTotalValue } from './util'
 
+const getNextMark = (marks, currentTime) => {
+  let next = null
+
+  for (let i = 0; i < marks.length; i++) {
+    if (marks[i].time > currentTime) {
+      next = marks[i]
+      break
+    }
+  }
+
+  return next
+}
+
+const getPrevMark = (marks, currentTime, delta = 3) => {
+  let prev = null
+
+  for (let i = 0; i < marks.length; i++) {
+    if (currentTime - delta > marks[i].time) {
+      prev = marks[i]
+    }
+  }
+
+  return prev
+}
+
 function App () {
   const [hasAudio, setHasAudio] = useState(false)
   const [audio, setAudio] = useState()
@@ -22,6 +47,11 @@ function App () {
     Mousetrap.bind('down', pause)
     Mousetrap.bind('del', reset)
   }, [audio])
+
+  useEffect(() => {
+    Mousetrap.bind('ctrl+left', goPrevMark)
+    Mousetrap.bind('ctrl+right', goNextMark)
+  }, [marks])
 
   const backTime = () => {
     audio.currentTime = audio.currentTime - 5
@@ -50,6 +80,20 @@ function App () {
     setAudio(null)
   }
 
+  const goNextMark = () => {
+    const mark = getNextMark(marks, audio.currentTime)
+    if (mark) {
+      audio.currentTime = mark.time
+    }
+  }
+
+  const goPrevMark = () => {
+    const mark = getPrevMark(marks, audio.currentTime)
+    if (mark) {
+      audio.currentTime = mark.time
+    }
+  }
+
   const handleSeek = (percent) => {
     audio.currentTime = percent * audio.duration / 100
   }
@@ -65,12 +109,15 @@ function App () {
   }
 
   const handleAddMarker = (percent) => {
+    const newMark = {
+      percent: `${percent}%`,
+      id: Math.random().toString(16),
+      time: (percent * audio.duration) / 100
+    }
+
     setMarks([
       ...marks,
-      {
-        percent: `${percent}%`,
-        id: Math.random().toString(16)
-      }
+      newMark
     ])
   }
 
