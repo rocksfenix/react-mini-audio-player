@@ -45,7 +45,7 @@ const Progressbar = (props) => {
     const rect = barRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     // We substract the middle of mark width
-    const percent = (x - 4) * 100 / barRef.current.clientWidth
+    const percent = (x - 8) * 100 / barRef.current.clientWidth
     props.onAddMarker(percent)
   }
 
